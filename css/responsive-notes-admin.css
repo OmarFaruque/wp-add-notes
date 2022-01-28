@@ -1,0 +1,109 @@
+.wp-toolbar .wp-core-ui #wpcontent #wpbody #wpbody-content #search-form{
+	display: table-row-group;
+    float: right;
+    margin-right: 20px;
+}
+.wp-toolbar .wp-core-ui #wpcontent #wpbody #wpbody-content #search-form #search-custom-notes{
+	width: 250px;
+    height: 35px;
+    border-radius: 8px;
+    padding: 6px;
+}
+.wp-toolbar .wp-core-ui #wpcontent #wpbody #wpbody-content #search-form input#search-notes{
+    border-radius: 5px;
+    width: 100px;
+}
+.wp-core-ui #wpbody #responsivestickynotes-list-table .responsivestickynotes thead tr td#id,
+.wp-core-ui #wpbody #responsivestickynotes-list-table .responsivestickynotes thead tr th#page,
+.wp-core-ui #wpbody #responsivestickynotes-list-table .responsivestickynotes thead tr th#delete{
+    width: 15%;
+}
+.wp-core-ui #wpbody #responsivestickynotes-list-table .responsivestickynotes thead tr th#name{
+    width: 40%;
+}
+.wp-core-ui #wpbody #responsivestickynotes-list-table .responsivestickynotes thead tr th#created{
+    width:20%;
+}
+.wp-core-ui #wpbody #responsivestickynotes-list-table .responsivestickynotes #the-list tr td.delete a{
+    color: rgb(190, 5, 5);
+}
+.wp-core-ui #wpbody #responsivestickynotes-list-table div.tablenav-pages span.pagination-links{
+    padding: 8px 16px;
+    text-decoration: none;
+    /* border: 2px solid #296e9d; */
+}
+.wp-core-ui #wpbody #responsivestickynotes-list-table div.tablenav-pages span.pagination-links span,
+.wp-core-ui #wpbody #responsivestickynotes-list-table div.tablenav-pages span.pagination-links a{
+    display: inline-block;
+    padding: 5px;
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+}
+.wp-core-ui #wpbody div.pix-position-add-note{
+    margin: 10px;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.wp-core-ui #wpbody div.pix-position-add-note .dropdownGroup{
+    background-color: #fff;
+    display: inline-block;
+    margin: 10px 0;
+    position: relative;
+}
+.wp-core-ui #wpbody div.pix-position-add-note .dropdownGroup:hover{
+    border: 1px solid #1e8cbe;
+}
+
+/* The Modal (background) */
+.wp-core-ui #wpbody div.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.wp-core-ui #wpbody div#alert-message-pos{
+    margin: 25px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.wp-core-ui #wpbody div#alert-message-pos div#alert-message{
+    padding: 10px;
+    margin: 5px 0px 5px 0px;
+    background: #bde251;
+    display: flex;
+}
+.wp-core-ui #wpbody div#alert-message-pos div#position{
+    padding: 10px;
+    margin: 5px 0px 5px 0px;
+    background: #9dbbe2;
+    display: flex;
+}
+.wp-core-ui #wpbody div#help-content-block{
+    display:none;
+    background: white;
+    padding: 10px;
+    margin-top: 10px;
+}
+.wp-core-ui #wpbody div#help-content-block span#close-button{
+    float: right;
+    font-size: 25px;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+.wp-core-ui #wpbody div#help-content-block span#close-button:hover{
+    color:red;
+}
+.wp-core-ui #wpbody div#help-content-block div#help-content{
+    display:none;
+    text-transform: capitalize;
+    margin: 20px
+}
