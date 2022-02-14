@@ -266,7 +266,7 @@ div.responsivestickynotes-marker-overlay:active
 	position:fixed;
 	top: 50px;
 	left: 10px;
-	z-index: 10;
+	z-index: 999;
 }
 .addnote-responsivestickynote-Top-Middle{
 	position:fixed;
@@ -285,7 +285,7 @@ div.responsivestickynotes-marker-overlay:active
 	position:fixed;
 	bottom: 50px;
 	left: 10px;
-	z-index: 10;
+	z-index: 999;
 }
 .addnote-responsivestickynote-Bottom-Middle{
 	position:fixed;
@@ -357,4 +357,45 @@ button#addnote-to-front:hover span {
 button#addnote-to-front:hover span:after {
 	opacity: 1;
 	right: 0;
+}
+
+.v_note:not(.show){
+	display: none;
+}
+
+ul.v_lists{
+	margin-left: 0;
+	list-style: none !important;
+	display: flex !important;
+	padding-left: 0 !important;
+}
+
+ul.v_lists li a{
+	text-decoration: none !important;
+	background-image: url(../images/sticky-note.png);
+	background-repeat: no-repeat;
+    background-size: cover;
+    height: 30px;
+    width: 40px;
+    display: inline-block;
+    margin-right: 15px;
+    padding: 5px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 18px;
+    background-position: bottom;
+    border-radius: 3px;
+}
+
+ul.v_lists li a:focus{
+	outline: none;
+	box-shadow: none;
+}
+.v_lists_parent{
+	display: block !important;
+	overflow: hidden;
+}
+
+body.learndash-cpt.learndash-embed-responsive .ld-video.lpliestwrap{
+	padding-bottom: 68%;
 }

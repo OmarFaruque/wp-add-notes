@@ -36,6 +36,7 @@ responsivestickynotes_object.prototype = {
 
 		// Add video push event for add note
 		jQuery("video").on("pause", function (e) { 
+			responsivestickynotes_obj.cssString = '';
 			responsivestickynotes_add_note(e, jQuery(this));
 		});
 
@@ -95,7 +96,9 @@ responsivestickynotes_object.prototype = {
 			'action': 'responsivestickynotes_fetchall',
 			'security': responsivestickynotes_vars.postNoteNonce,
 			'ids': pageIds
-			};
+		};
+
+		// var v_lists = '<ul>ul'
 
 		jQuery.ajax({
 			url: ajaxurl,
@@ -111,6 +114,20 @@ responsivestickynotes_object.prototype = {
 					if (ec != null) {
 						noteData.elementChain = ec;
 						note_obj.createNote(noteData);
+						
+
+						if(jQuery(noteData.elementChain).parent().find('.v_lists').length <= 0 && noteData.v_name && noteData.current_time){
+							jQuery(noteData.elementChain).parent().addClass('v_lists_parent').append('<ul class="v_lists"></ul>');
+							if(jQuery(noteData.elementChain).closest('.ld-video').length > 0 ) jQuery(noteData.elementChain).closest('.ld-video').addClass('lpliestwrap');
+						}
+							
+						
+						if(noteData.v_name && noteData.current_time){
+							var viewTime = (noteData.current_time / 100).toFixed(2).replace('.', ':');
+							jQuery(noteData.elementChain).parent().find('.v_lists').append('<li><a href="'+noteData.page_link+'">'+ viewTime +'</a></li>');
+						}
+							
+						
 					}
 				});
 			},
@@ -373,7 +390,10 @@ responsivestickynotes_object.prototype = {
 		var bgcol = noteData.bg_color;
 		var col = noteData.color;
 		var index= noteData.index;
-		var note = new responsivestickynote(elementChain,tooltip, text, postId, admin_url, bgcol, col, index);
+		var v_name = noteData.v_name;
+		var current_time = noteData.current_time;
+
+		var note = new responsivestickynote(elementChain,tooltip, text, postId, admin_url, bgcol, col, index, v_name, current_time);
 	},
 	removeNote: function(id) {
 		for (var i=0;i<this.notes.length;i++) {
@@ -554,6 +574,12 @@ function responsivestickynotes_add_note(v_event = false, thisEvent = false) {
 			if(event.target.id !== 'addnote-to-front-span' && event.target.id !== 'addnote-to-front'){
 				if (!responsivestickynotes_obj.started) return;
 				//if (!canAddNote) return;
+
+				if(jQuery(event.target).hasClass('mejs-overlay')){
+					return;
+				}
+
+
 				if (responsivestickynotes_obj.isAdminBar(jQuery(event.target))) {
 					return;
 				}
@@ -566,19 +592,38 @@ function responsivestickynotes_add_note(v_event = false, thisEvent = false) {
 				var nextId = responsivestickynotes_vars.nextId; //post id of next draft note
 				
 				
+
+
+				
+				
 				if(type == 'video' && responsivestickynotes_obj.cssString == ''){
+					
 					responsivestickynotes_obj.cssString = responsivestickynotes_object.prototype.getElementchain(jQuery(event.target));
 					var currentTime = thisEvent.get(0).currentTime;
 					var vName = thisEvent.attr('src');
 					var vindex = vName.lastIndexOf("/") + 1;
 					vName = vName.substr(vindex);
 					vName = vName.replace(/\.[^/]+$/, "");
+
+					var viewTime = (currentTime / 100).toFixed(2).replace('.', ':');
+
+					
+
+
+					//bottom time item 
+
+					if(jQuery(responsivestickynotes_obj.cssString).parent().find('.v_lists').length <= 0 && vName && currentTime){
+						jQuery(responsivestickynotes_obj.cssString).parent().addClass('v_lists_parent').append('<ul class="v_lists"></ul>');
+						if(jQuery(responsivestickynotes_obj.cssString).closest('.ld-video').length > 0 ) jQuery(responsivestickynotes_obj.cssString).closest('.ld-video').addClass('lpliestwrap');
+					}
+						
+					
+					if(vName && currentTime)
+						jQuery(responsivestickynotes_obj.cssString).parent().find('.v_lists').append('<li><a href="'+document.location.href + '?v=' + vName + '&t=' + currentTime +'">'+ viewTime +'</a></li>');
+
 				}
+
 				
-				
-				
-				
-				console.log('vName: ', vName);
 				var s = responsivestickynotes_obj.getBrowserCorrectChain(responsivestickynotes_obj.cssString);
 				if(selectedText === ''){
 					selectedText=window.getSelection().toString();
@@ -609,7 +654,6 @@ function responsivestickynotes_add_note(v_event = false, thisEvent = false) {
 					},
 					success: function(data) {
 
-						console.log('test success data: ', data);
 						if (data==="error") {
 							//error - remove note
 							console.log("no id from server (error message returned) - removing note");

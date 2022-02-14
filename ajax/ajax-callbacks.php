@@ -13,6 +13,8 @@ add_action( 'wp_ajax_responsivestickynotes_delete', 				'responsivestickynotes_d
 add_action( 'wp_ajax_responsivestickynotes_update_color', 		'responsivestickynotes_update_color_callback' );
 
 
+
+
 //add a new note and return the id
 function responsivestickynotes_new_callback() {
 	check_ajax_referer( 'myajax-post-note-nonce', 'security' );

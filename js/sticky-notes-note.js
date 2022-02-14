@@ -4,7 +4,7 @@
  */
 
 //constructor
-function responsivestickynote(elementChain, tooltip, text, postId, adminUrl, bgcol, col,index) {
+function responsivestickynote(elementChain, tooltip, text, postId, adminUrl, bgcol, col, index, v_name = false, current_time = false) {
 	this.tooltip=tooltip;
 	this.elementChain = elementChain;
 	this.postId = postId;
@@ -19,6 +19,8 @@ function responsivestickynote(elementChain, tooltip, text, postId, adminUrl, bgc
 	this.bgCol = bgcol;
 	this.isAdmin = (this.adminUrl===null) ? false : true;
 	this.menuHidden = true;
+	this.v_name = v_name;
+	this.current_time = current_time;
 	var obj = jQuery("div#wpadminbar");
 	this.adminBarH = (obj.length > 0) ? obj.outerHeight() : 0;
 	this.add(text);
@@ -37,7 +39,23 @@ responsivestickynote.prototype = {
 		//but also, if object is hidden then note will be as well, and all notes should be visible at all times
 		//icon
 		this.markerId = this.id + "-marker";
-		var d = '<div class="responsivestickynote responsivestickynotes-marker-container" id="' +this.id + '" title="'+responsivestickynotes_vars.untitled_note +'" alt="'+responsivestickynotes_vars.untitled_note +'">';
+		var classIs = 'responsivestickynote responsivestickynotes-marker-container';
+
+		var params = (new URL(document.location)).searchParams;
+		var url_v_name = params.get("v");
+		var url_current_time = params.get("t");
+
+		if(this.v_name != false && this.current_time != false){
+			classIs += ' v_note';
+			classIs += (this.v_name == url_v_name && this.current_time == url_current_time) ? ' show' : '';
+		}
+
+		// list of time 
+		if(this.v_name != false && this.current_time != false){
+			var listElement = '<ul></ul>'
+		}
+		
+		var d = '<div class="'+classIs+'" id="' +this.id + '" title="'+responsivestickynotes_vars.untitled_note +'" alt="'+responsivestickynotes_vars.untitled_note +'">';
 		d += '<div class="responsivestickynote responsivestickynotes-marker1" id="' + this.markerId + '1" ></div>';
 		d += '<div class="responsivestickynote responsivestickynotes-marker2" id="' + this.markerId + '2"></div>';
 		d += '<div class="responsivestickynote responsivestickynotes-marker3" id="' + this.markerId + '3"></div>';
@@ -85,6 +103,8 @@ responsivestickynote.prototype = {
 		this.noteAreaId = this.id + "-note";
 		d += '<textarea class="responsivestickynote responsivestickynotes-note" id="'+this.noteAreaId+'" rows="4" cols="50">'+this.content+'</textarea>';
 		d += '</div>';
+
+		//Append Video Lists
 		jQuery("body").append(d);
 		wp.editor.initialize( this.noteAreaId ,{
 			tinymce: {

@@ -28,6 +28,7 @@ class RESPONSIVESTICKYNOTES_note {
 	}
 
 	public static function get_notes($post_ids=NULL, $get_contents = TRUE) {
+
 		$out = array();
 		global $post;
 		$args=array(
@@ -37,15 +38,20 @@ class RESPONSIVESTICKYNOTES_note {
 				'posts_per_page' 	=> -1,
 				'order'				=>'ASC'
 		);
+
 		if(!$get_contents && isset($_POST['search-custom-notes'])){
 			$args['s']=$_POST['search-custom-notes'];
 		}
 		$my_query = new WP_Query($args);
+
+
+
 		if( $my_query->have_posts() ) {
 			$index = 1;
 			while ($my_query->have_posts()) {
 				$my_query->the_post();
 				$elementChain = get_post_meta($post->ID, RESPONSIVESTICKYNOTES_note::element_chain, true);
+
 				$found = true;
 				if ($post_ids != NULL) {
 					$found = false;
@@ -64,15 +70,28 @@ class RESPONSIVESTICKYNOTES_note {
 							}
 						}
 					}
+					if($found == false){
+						$re = '/BODY.postid-(\d+)/i';
+						if (preg_match($re, $elementChain, $matches)) {
+							if (in_array($matches[1], $post_ids)) {
+								$found = true;
+							}
+						}
+					}
 				}
+
+
 				if ($found) {
 					$pageId = get_post_meta($post->ID, RESPONSIVESTICKYNOTES_note::page_id, true);
 					$color = get_post_meta($post->ID, RESPONSIVESTICKYNOTES_note::color, true);
 					$bgcolor = get_post_meta($post->ID, RESPONSIVESTICKYNOTES_note::bgcolor, true);
 					$pageLink = get_permalink($pageId);
 
+					$v_name = $current_time = false;
 					if( get_post_meta( $post->ID, 'v_name', true ) && get_post_meta( $post->ID, 'current_time', true ) ){
 						$pageLink .= '?v=' .  get_post_meta( $post->ID, 'v_name', true ) . '&t=' . get_post_meta( $post->ID, 'current_time', true );
+						$v_name = get_post_meta( $post->ID, 'v_name', true );
+						$current_time = get_post_meta( $post->ID, 'current_time', true );
 					}
 
 					$pageName = get_the_title($pageId);
@@ -81,6 +100,7 @@ class RESPONSIVESTICKYNOTES_note {
 					$title = self::get_title($post);
 					$tooltip = self::get_tooltip($post);
 					$admin_url = (self::can_edit()) ? self::admin_url($post->ID) : null;
+					
 
 					array_push($out, array(
 						'id'=>$post->ID,
@@ -93,8 +113,10 @@ class RESPONSIVESTICKYNOTES_note {
 						'tooltip'=>$tooltip,
 						'admin_url'=>$admin_url,
 						'color'=>$color,
-						'bg_color'=>$bgcolor,
-						'omar' => 'test omar'
+						'bg_color'=>$bgcolor, 
+						'v_name' => $v_name, 
+						'current_time' => $current_time, 
+						'page_link' => $pageLink
 					));
 				}
 				$index++;
